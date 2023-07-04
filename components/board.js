@@ -3,7 +3,7 @@ const getBoard = x => {
     for (let i = 0; i < 64; i++) {
         boardContent.push(<p>{i}</p>);
     }
-
+    
     return boardContent;
 }
 
