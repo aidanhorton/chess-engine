@@ -24,14 +24,6 @@ export default function Square({ index, piece, selected, highlighted, legalMove,
     )
 }
 
-function getLegalMoveStyle(piece: Piece, legalMove: boolean) {
-    if (legalMove) {
-        return piece === Piece.None ? styles.legalMoveHighlight : styles.legalMoveHighlightPiece;
-    }
-
-    return "";
-}
-
 function getSquareStyle(index: number, selected: boolean, highlighted: boolean) {
     const darkSquare = isDarkSquare(index);
     
@@ -43,6 +35,14 @@ function getSquareStyle(index: number, selected: boolean, highlighted: boolean) 
     }
 
     return darkSquare ? styles.secondarySquare : "";
+}
+
+function getLegalMoveStyle(piece: Piece, legalMove: boolean) {
+    if (legalMove) {
+        return piece === Piece.None ? styles.legalMoveHighlight : styles.legalMoveHighlightPiece;
+    }
+
+    return "";
 }
 
 function isDarkSquare(index: number) {

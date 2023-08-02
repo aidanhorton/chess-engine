@@ -16,14 +16,16 @@ export default function Board() {
 
     const handleSquareClick = (index: number) => {
         if (selectedPiece) {
-            if (index === selectedPiece.index) {
+            if (index === selectedPiece.index || !legalMoves.some(move => move.to === index)) {
                 setSelectedPiece(null);
             } else if (PieceUtils.isPieceColour(board[index], isPlayerWhite)) {
                 setSelectedPiece({ index, piece: board[index] });
             } else {
+                // Player has selected a legal move.
                 const newBoard = [...board];
                 newBoard[index] = selectedPiece.piece;
                 newBoard[selectedPiece.index] = Piece.None;
+                
                 setBoard(newBoard);
                 setLastMove({ from: selectedPiece.index, to: index, piece: selectedPiece.piece })
                 setSelectedPiece(null);
@@ -32,7 +34,7 @@ export default function Board() {
             setSelectedPiece({ index, piece: board[index] });
         }
     }
-    
+
     return (
         <div className={styles.board}>
             {board.map((piece, index) => 
