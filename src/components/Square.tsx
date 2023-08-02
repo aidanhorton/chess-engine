@@ -1,11 +1,34 @@
 import styles from './Square.module.css';
+import { Piece } from '../types/piece';
 
-export default function Square({ index }: { index: number }) {
-    const squareStyle = `${styles.square} ${isDarkSquare(index) ? styles.secondarySquare : ""}`;
-    
+interface SquareProps {
+    index: number;
+    piece: Piece;
+    selected: boolean;
+    highlighted: boolean;
+    onClick: () => void;
+}
+
+export default function Square({ index, piece, selected, highlighted, onClick }: SquareProps) {
+    const squareStyle = `${styles.square} ${getSquareStyle(index, selected, highlighted)}`;
+    const pieceString: string = piece;
+
     return (
-        <span className={squareStyle}></span>
+        <span className={squareStyle} onClick={onClick}>{pieceString}</span>
     )
+}
+
+function getSquareStyle(index: number, selected: boolean, highlighted: boolean) {
+    const darkSquare = isDarkSquare(index);
+    
+    if (selected) {
+        return darkSquare ? styles.darkSelectedSquare : styles.selectedSquare;
+    }
+    if (highlighted) {
+        return darkSquare ? styles.darkHighlightedSquare : styles.highlightedSquare;
+    }
+    
+    return darkSquare ? styles.secondarySquare : "";
 }
 
 function isDarkSquare(index: number) {

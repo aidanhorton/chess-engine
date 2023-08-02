@@ -1,6 +1,5 @@
 import Board from './components/Board'
 import './App.css';
-import Button from '@mui/material/Button'
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
