@@ -39,8 +39,14 @@ export class Piece {
     }
 }
 
-export interface Move {
+export class Move {
     from: number;
     to: number;
     piece: Piece;
+
+    constructor(from: number, to: number, piece: Piece) {
+        this.from = from;
+        this.to = to;
+        this.piece = piece;
+    }
 }

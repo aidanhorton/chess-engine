@@ -14,22 +14,22 @@ export function getLegalMovesForPawn(board: Piece[], position: number): Move[] {
     const oneSquareAhead = position - 8;
     const pieceAhead = board[oneSquareAhead];
     if (pieceAhead.type === PieceType.None) {
-        moves.push({ from: position, to: oneSquareAhead, piece: piece });
+        moves.push(new Move(position, oneSquareAhead, piece));
     }
 
     // Move forward two squares if it's on its starting row and both squares ahead are free
     if (row === 6 && pieceAhead.type === PieceType.None && board[position - 16].type === PieceType.None) {
-        moves.push({ from: position, to: position - 16, piece: piece });
+        moves.push(new Move(position, position - 16, piece));
     }
 
     // Capture diagonally left, if there's an enemy piece there
     if (col > 0 && board[position - 9].isBlackNonKing()) {
-        moves.push({ from: position, to: position - 9, piece: piece });
+        moves.push(new Move(position, position - 9, piece));
     }
 
     // Capture diagonally right, if there's an enemy piece there
     if (col < 7 && board[position - 7].isBlackNonKing()) {
-        moves.push({ from: position, to: position - 7, piece: piece });
+        moves.push(new Move(position, position - 7, piece));
     }
 
     return moves;
@@ -56,7 +56,7 @@ export function getLegalMovesForKnight(board: Piece[], piece: Piece, position: n
 
         // Check if the target square is empty or contains an opponent's piece
         if (targetPiece.type === PieceType.None || (!piece.isSameColor(targetPiece) && targetPiece.type !== PieceType.King)) {
-            moves.push({ from: position, to: targetPosition, piece });
+            moves.push(new Move(position, targetPosition, piece));
         }
     }
     
@@ -88,7 +88,7 @@ export function getLegalMovesForBishop(board: Piece[], piece: Piece, position: n
             if (piece.isSameColor(targetPiece)) break;
 
             // If the target square is empty or contains an opponent's piece, the move is legal
-            moves.push({ from: position, to: targetPosition, piece });
+            moves.push(new Move(position, targetPosition, piece));
 
             // If there's a piece on the target square, the bishop can't move past it
             if (targetPiece.type !== PieceType.None) break;
@@ -122,7 +122,7 @@ export function getLegalMovesForRook(board: Piece[], piece: Piece, position: num
             if (piece.isSameColor(targetPiece)) break;
             
             // If the target square is empty or contains an opponent's piece, the move is legal
-            moves.push({ from: position, to: targetPosition, piece });
+            moves.push(new Move(position, targetPosition, piece));
             
             // If there's a piece on the target square, the rook can't move past it
             if (targetPiece.type !== PieceType.None) break;
@@ -156,7 +156,7 @@ export function getLegalMovesForQueen(board: Piece[], piece: Piece, position: nu
             if (piece.isSameColor(targetPiece)) break;
 
             // If the target square is empty or contains an opponent's piece, the move is legal
-            moves.push({ from: position, to: targetPosition, piece });
+            moves.push(new Move(position, targetPosition, piece));
 
             // If there's a piece on the target square, the queen can't move past it
             if (targetPiece.type !== PieceType.None) break;
@@ -190,7 +190,7 @@ export function getLegalMovesForKing(board: Piece[], piece: Piece, position: num
         if (piece.isSameColor(targetPiece)) continue;
         
         // If the target square is empty or contains an opponent's piece, the move is legal
-        moves.push({ from: position, to: targetPosition, piece });
+        moves.push(new Move(position, targetPosition, piece));
     }
 
     return moves;

@@ -4,6 +4,7 @@ import styles from './Board.module.css';
 import { interpretFEN } from '../utils/fenInterpreter';
 import * as ChessRules from '../utils/chessRules';
 import { Piece, Move, PieceType, PieceColor } from '../types/chess';
+import { calculateMove } from '../features/ai/chessAI';
 
 export default function Board() {
     const [board, setBoard] = useState<Piece[]>(interpretFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
@@ -28,6 +29,9 @@ export default function Board() {
                 const newBoard = [...board];
                 newBoard[index] = selectedPiece.piece;
                 newBoard[selectedPiece.index] = new Piece(PieceType.None, PieceColor.None);
+
+                // AI's turn.
+                const aiMove = calculateMove(newBoard, playerColor);
 
                 setBoard(newBoard);
                 setLastMove({ from: selectedPiece.index, to: index, piece: selectedPiece.piece })
