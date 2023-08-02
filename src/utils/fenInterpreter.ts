@@ -1,36 +1,25 @@
-import { Piece } from '../types/chess';
+import { Piece, PieceType, PieceColor } from '../types/chess';
 
 export function interpretFEN(fen: string): Piece[] {
-  const boardFen = fen.split(' ')[0];
-  let pieces: Piece[] = [];
-  
-  for (const char of boardFen) {
-    if (char === '/') continue;
-  
-    if (isNaN(Number(char))) {
-      pieces.push(mapFenCharToPiece(char));
-    } else {
-      pieces = pieces.concat(new Array(Number(char)).fill(Piece.None));
-    }
-  }
-  
-  return pieces;
-}
+    const board: Piece[] = [];
+    const fenRows = fen.split(' ')[0].split('/');
 
-function mapFenCharToPiece(fenChar: string): Piece {
-  switch (fenChar) {
-    case 'P': return Piece.WhitePawn;
-    case 'R': return Piece.WhiteRook;
-    case 'N': return Piece.WhiteKnight;
-    case 'B': return Piece.WhiteBishop;
-    case 'Q': return Piece.WhiteQueen;
-    case 'K': return Piece.WhiteKing;
-    case 'p': return Piece.BlackPawn;
-    case 'r': return Piece.BlackRook;
-    case 'n': return Piece.BlackKnight;
-    case 'b': return Piece.BlackBishop;
-    case 'q': return Piece.BlackQueen;
-    case 'k': return Piece.BlackKing;
-    default: return Piece.None;
-  }
+    for (const fenRow of fenRows) {
+        for (const char of fenRow) {
+            if (char >= '1' && char <= '8') {
+                // It's a number indicating empty squares
+                const count = parseInt(char, 10);
+                for (let j = 0; j < count; j++) {
+                    board.push(new Piece(PieceType.None, PieceColor.None));
+                }
+            } else {
+                // It's a letter indicating a piece
+                const type = char.toLowerCase() as PieceType;
+                const color = char === char.toLowerCase() ? PieceColor.Black : PieceColor.White;
+                board.push(new Piece(type, color));
+            }
+        }
+    }
+
+    return board;
 }

@@ -1,5 +1,5 @@
 import styles from './Square.module.css';
-import { Piece } from '../types/chess';
+import { Piece, PieceType } from '../types/chess';
 
 interface SquareProps {
     index: number;
@@ -12,13 +12,12 @@ interface SquareProps {
 
 export default function Square({ index, piece, selected, highlighted, legalMove, onClick }: SquareProps) {
     const squareStyle = `${styles.square} ${getSquareStyle(index, selected, highlighted)}`;
-    const legalMoveStyle = getLegalMoveStyle(piece, legalMove);
-    const pieceString: string = piece;
+    const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(piece, legalMove)}`;
     
     return (
         <div className={squareStyle} onClick={onClick}>
             <div className={legalMoveStyle}>
-                {pieceString}
+                {piece.text}
             </div>
         </div>
     )
@@ -39,7 +38,7 @@ function getSquareStyle(index: number, selected: boolean, highlighted: boolean) 
 
 function getLegalMoveStyle(piece: Piece, legalMove: boolean) {
     if (legalMove) {
-        return piece === Piece.None ? styles.legalMoveHighlight : styles.legalMoveHighlightPiece;
+        return piece.type === PieceType.None ? styles.legalMoveHighlight : styles.legalMoveHighlightPiece;
     }
 
     return "";

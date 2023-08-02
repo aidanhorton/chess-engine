@@ -1,4 +1,4 @@
-import { Piece, Move } from '../types/chess';
+import { Piece, Move, PieceType } from '../types/chess';
 import * as LegalMoves from './legalMoves';
 
 // Check if a given move is legal according to chess rules.
@@ -9,10 +9,19 @@ export function isMoveLegal(boardState: Piece[], move: Move): boolean {
 
 // Get all legal moves for a given piece at a particular position.
 export function getLegalMoves(boardState: Piece[], piece: Piece, position: number): Move[] {
-    switch (piece) {
-        case Piece.WhitePawn:
+    switch (piece.type) {
+        case PieceType.Pawn:
             return LegalMoves.getLegalMovesForPawn(boardState, position);
-        // Repeat for other piece types...
+        case PieceType.Knight:
+            return LegalMoves.getLegalMovesForKnight(boardState, piece, position);
+        case PieceType.Bishop:
+            return LegalMoves.getLegalMovesForBishop(boardState, piece, position);
+        case PieceType.Rook:
+            return LegalMoves.getLegalMovesForRook(boardState, piece, position);
+        case PieceType.Queen:
+            return LegalMoves.getLegalMovesForQueen(boardState, piece, position);
+        case PieceType.King:
+            return LegalMoves.getLegalMovesForKing(boardState, piece, position);
         default:
             return [];
     }
