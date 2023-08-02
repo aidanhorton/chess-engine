@@ -145,10 +145,14 @@ export function getLegalMovesForQueen(board: Piece[], piece: Piece, position: nu
             // Check if the target position is within bounds of the board
             if (targetPosition < 0 || targetPosition >= 64) break;
 
-            // Check for wrapping around the board when moving horizontally or diagonally
-            if ((offset === 1 && targetPosition % 8 === 0) || (offset === -1 && targetPosition % 8 === 7)) break;
-            if ((offset === -7 && targetPosition % 8 === 7) || (offset === 7 && targetPosition % 8 === 0)) break;
-            if ((offset === -9 && targetPosition % 8 === 7) || (offset === 9 && targetPosition % 8 === 0)) break;
+            // Check for wrapping around the board when moving horizontally
+            if (Math.abs(offset) === 1 && (position % 8 === 0 && offset === -1 || (position + 1) % 8 === 0 && offset === 1)) break;
+
+            // Check for wrapping around the board when moving diagonally
+            if ((offset === -9 && (position % 8 === 0 || targetPosition % 8 === 7)) ||
+                (offset === 9 && (position % 8 === 7 || targetPosition % 8 === 0)) ||
+                (offset === -7 && (position % 8 === 7 || targetPosition % 8 === 0)) ||
+                (offset === 7 && (position % 8 === 0 || targetPosition % 8 === 7))) break;
 
             const targetPiece = board[targetPosition];
 
