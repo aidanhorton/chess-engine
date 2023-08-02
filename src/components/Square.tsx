@@ -1,4 +1,4 @@
-import styles from './square.module.css';
+import styles from './Square.module.css';
 
 export default function Square({ index }: { index: number }) {
     const squareStyle = `${styles.square} ${isDarkSquare(index) ? styles.secondarySquare : ""}`;
