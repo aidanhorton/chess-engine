@@ -1,9 +1,29 @@
+.legalMoveHighlight {
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    background-color: #003a08;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.legalMoveHighlightPiece {
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    border: 5px solid #003a08;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .square {
     aspect-ratio: 1/1;
     background-color: #0a0a0a;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     transition: background-color 0.4s cubic-bezier(0, 0.71, 0.35, 0.79);
 }
 .square:hover {

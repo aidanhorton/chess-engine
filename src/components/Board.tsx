@@ -2,8 +2,9 @@ import { useState } from 'react';
 import Square from './Square';
 import styles from './Board.module.css';
 import { interpretFEN } from '../utils/fenInterpreter';
-import { Piece, isWhite, isBlack, isPieceColour } from '../types/piece';
-import { Move } from '../types/move';
+import * as PieceUtils from '../utils/pieceUtils';
+import * as ChessRules from '../utils/chessRules';
+import { Piece, Move } from '../types/chess';
 
 export default function Board() {
     const [board, setBoard] = useState<Piece[]>(interpretFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
@@ -11,11 +12,13 @@ export default function Board() {
     const [lastMove, setLastMove] = useState<Move | null>(null);
     const [isPlayerWhite, setIsPlayerWhite] = useState<boolean>(true);
 
+    const legalMoves: Move[] = selectedPiece ? ChessRules.getLegalMoves(board, selectedPiece.piece, selectedPiece.index) : [];
+
     const handleSquareClick = (index: number) => {
         if (selectedPiece) {
             if (index === selectedPiece.index) {
                 setSelectedPiece(null);
-            } else if (isPieceColour(board[index], isPlayerWhite)) {
+            } else if (PieceUtils.isPieceColour(board[index], isPlayerWhite)) {
                 setSelectedPiece({ index, piece: board[index] });
             } else {
                 const newBoard = [...board];
@@ -25,11 +28,11 @@ export default function Board() {
                 setLastMove({ from: selectedPiece.index, to: index, piece: selectedPiece.piece })
                 setSelectedPiece(null);
             }
-        } else if (board[index] !== Piece.None && isPieceColour(board[index], isPlayerWhite)) {
+        } else if (board[index] !== Piece.None && PieceUtils.isPieceColour(board[index], isPlayerWhite)) {
             setSelectedPiece({ index, piece: board[index] });
         }
     }
-
+    
     return (
         <div className={styles.board}>
             {board.map((piece, index) => 
@@ -38,6 +41,7 @@ export default function Board() {
                     piece={piece}
                     selected={selectedPiece?.index === index}
                     highlighted={lastMove?.from === index || lastMove?.to === index}
+                    legalMove={legalMoves.some(move => move.to === index)}
                     onClick={() => handleSquareClick(index)}
                     key={index}
                 />)}

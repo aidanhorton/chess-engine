@@ -1,21 +1,21 @@
-import { Piece } from '../types/piece';
+import { Piece } from '../types/chess';
 
 export function interpretFEN(fen: string): Piece[] {
-    const boardFen = fen.split(' ')[0];
-    let pieces: Piece[] = [];
+  const boardFen = fen.split(' ')[0];
+  let pieces: Piece[] = [];
   
-    for (const char of boardFen) {
-      if (char === '/') continue;
+  for (const char of boardFen) {
+    if (char === '/') continue;
   
-      if (isNaN(Number(char))) {
-        pieces.push(mapFenCharToPiece(char));
-      } else {
-        pieces = pieces.concat(new Array(Number(char)).fill(Piece.None));
-      }
+    if (isNaN(Number(char))) {
+      pieces.push(mapFenCharToPiece(char));
+    } else {
+      pieces = pieces.concat(new Array(Number(char)).fill(Piece.None));
     }
-  
-    return pieces;
   }
+  
+  return pieces;
+}
 
 function mapFenCharToPiece(fenChar: string): Piece {
   switch (fenChar) {
