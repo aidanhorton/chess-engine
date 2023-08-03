@@ -9,9 +9,9 @@ export enum PieceType {
 }
 
 export enum PieceColor {
-    White,
-    Black,
-    None
+    White = 'w',
+    Black = 'b',
+    None = ''
 }
 
 export class Piece {
@@ -37,16 +37,22 @@ export class Piece {
     isSameColor(other: Piece): boolean {
         return this.color === other.color;
     }
+
+    getImage() {
+        return `/pieces/${this.type}${this.color.toString()}.png`;
+    }
 }
 
 export class Move {
     from: number;
     to: number;
     piece: Piece;
+    isKingCapture: boolean;
 
-    constructor(from: number, to: number, piece: Piece) {
+    constructor(from: number, to: number, piece: Piece, isKingCapture = false) {
         this.from = from;
         this.to = to;
         this.piece = piece;
+        this.isKingCapture = isKingCapture;
     }
 }

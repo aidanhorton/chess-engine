@@ -1,24 +1,25 @@
 .piece {
+    aspect-ratio: 1/1;
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pieceImage {
+    aspect-ratio: 1/1;
+    width: 75%;
 }
 
 .legalMoveHighlight {
-    aspect-ratio: 1/1;
     border-radius: 100%;
     background-color: #003a08;
     width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .legalMoveHighlightPiece {
-    aspect-ratio: 1/1;
     border-radius: 100%;
     border: 5px solid #003a08;
     width: 90%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .square {

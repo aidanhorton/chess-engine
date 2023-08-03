@@ -7,17 +7,20 @@ interface SquareProps {
     selected: boolean;
     highlighted: boolean;
     legalMove: boolean;
+    useImage: boolean;
     onClick: () => void;
 }
 
-export default function Square({ index, piece, selected, highlighted, legalMove, onClick }: SquareProps) {
+export default function Square({ index, piece, selected, highlighted, legalMove, useImage, onClick }: SquareProps) {
     const squareStyle = `${styles.square} ${getSquareStyle(index, selected, highlighted)}`;
     const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(piece, legalMove)}`;
+
+    const pieceRender = useImage && piece.type !== PieceType.None ? <img src={piece.getImage()} className={styles.pieceImage} /> : piece.text;
     
     return (
         <div className={squareStyle} onClick={onClick}>
             <div className={legalMoveStyle}>
-                {piece.text}
+                {pieceRender}
             </div>
         </div>
     )
@@ -33,7 +36,7 @@ function getSquareStyle(index: number, selected: boolean, highlighted: boolean) 
         return darkSquare ? styles.darkHighlightedSquare : styles.highlightedSquare;
     }
 
-    return darkSquare ? styles.secondarySquare : "";
+    return darkSquare ? styles.darkSquare : "";
 }
 
 function getLegalMoveStyle(piece: Piece, legalMove: boolean) {
