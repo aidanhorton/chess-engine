@@ -1,5 +1,6 @@
 import Board from './components/Board'
 import './App.css';
+import { themes } from './types/themes';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -22,7 +23,7 @@ function App() {
 
     return (
         <>
-            <Board imagesEnabled={imagesEnabled} playAI={playAI} />
+            <Board imagesEnabled={imagesEnabled} playAI={playAI} theme={themes[1]} />
 
             <FormControlLabel control={<Switch checked={imagesEnabled} onChange={handleImageEnabledChange} />} label="Images" />
             <FormControlLabel control={<Switch checked={playAI} onChange={handlePlayAIChange} />} label="Play AI" />

@@ -1,5 +1,6 @@
 import styles from './Square.module.css';
 import { Piece, PieceType } from '../types/chess';
+import { Theme } from '../types/themes';
 
 interface SquareProps {
     index: number;
@@ -9,35 +10,22 @@ interface SquareProps {
     legalMove: boolean;
     useImage: boolean;
     isInCheck: boolean;
+    theme: Theme;
     onClick: () => void;
 }
 
-export default function Square({ index, piece, selected, highlighted, legalMove, useImage, isInCheck, onClick }: SquareProps) {
-    const squareStyle = `${styles.square} ${getSquareStyle(index, selected, highlighted)}`;
-    const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(piece, legalMove, isInCheck)}`;
+export default function Square(props: SquareProps) {
+    const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(props.piece, props.legalMove, props.isInCheck)}`;
 
-    const pieceRender = useImage && piece.type !== PieceType.None ? <img src={piece.getImage()} className={styles.pieceImage} /> : piece.text;
+    const pieceRender = props.useImage && props.piece.type !== PieceType.None ? <img src={props.piece.getImage()} className={styles.pieceImage} /> : props.piece.text;
     
     return (
-        <div className={squareStyle} onClick={onClick}>
+        <div className={styles.square} onClick={props.onClick} style={{backgroundColor: getBackgroundColor(props) }}>
             <div className={legalMoveStyle}>
                 {pieceRender}
             </div>
         </div>
     )
-}
-
-function getSquareStyle(index: number, selected: boolean, highlighted: boolean) {
-    const darkSquare = isDarkSquare(index);
-    
-    if (selected) {
-        return darkSquare ? styles.darkSelectedSquare : styles.selectedSquare;
-    }
-    if (highlighted) {
-        return darkSquare ? styles.darkHighlightedSquare : styles.highlightedSquare;
-    }
-
-    return darkSquare ? styles.darkSquare : "";
 }
 
 function getLegalMoveStyle(piece: Piece, legalMove: boolean, isInCheck: boolean) {
@@ -50,6 +38,22 @@ function getLegalMoveStyle(piece: Piece, legalMove: boolean, isInCheck: boolean)
     }
 
     return "";
+}
+
+function getBackgroundColor(props: SquareProps): string {
+    // Deconstruct properties from props or state
+    const isDark = isDarkSquare(props.index);
+
+    // Determine the appropriate color based on the square's state
+    let squareColor = isDark ? props.theme.darkSquareColor : props.theme.lightSquareColor;
+    // if (isHovered) squareColor = isLightSquare ? colorPalette.lightSquareHover : colorPalette.darkSquareHover;
+    if (props.selected) squareColor = props.theme.selectedColor;
+    if (props.highlighted) squareColor = isDark ? props.theme.darkHighlightColor : props.theme.lightHighlightColor;
+    //if (isPreviousMove && isHovered) squareColor = isLightSquare ? colorPalette.previousMoveLightSquareHover : colorPalette.previousMoveDarkSquareHover;
+  
+    return squareColor;
+
+    //return <div style={{ backgroundColor: squareColor }}>...</div>;
 }
 
 function isDarkSquare(index: number) {

@@ -5,8 +5,9 @@ import { interpretFEN } from '../utils/fenInterpreter';
 import * as ChessRules from '../utils/chessRules';
 import { Piece, Move, PieceType, PieceColor } from '../types/chess';
 import { calculateMove } from '../features/ai/chessAI';
+import { Theme } from '../types/themes';
 
-export default function Board({ imagesEnabled, playAI }: { imagesEnabled: boolean, playAI: boolean }) {
+export default function Board({ imagesEnabled, playAI, theme }: { imagesEnabled: boolean, playAI: boolean, theme: Theme }) {
     const [board, setBoard] = useState<Piece[]>(interpretFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     const [selectedPiece, setSelectedPiece] = useState<{ index: number, piece: Piece } | null>(null);
     const [lastMove, setLastMove] = useState<Move | null>(null);
@@ -72,6 +73,7 @@ export default function Board({ imagesEnabled, playAI }: { imagesEnabled: boolea
                     onClick={() => handleSquareClick(index)}
                     useImage={imagesEnabled}
                     isInCheck={isCurrentColorInCheck && piece.color === turnColor && piece.type === PieceType.King}
+                    theme={theme}
                     key={index}
                 />)}
         </div>
