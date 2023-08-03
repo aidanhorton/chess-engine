@@ -22,6 +22,12 @@
     width: 90%;
 }
 
+.inCheckHighlight {
+    border-radius: 100%;
+    border: 5px solid #770000;
+    width: 90%;
+}
+
 .square {
     aspect-ratio: 1/1;
     background-color: #0a0a0a;

@@ -6,7 +6,7 @@ import * as ChessRules from '../utils/chessRules';
 import { Piece, Move, PieceType, PieceColor } from '../types/chess';
 import { calculateMove } from '../features/ai/chessAI';
 
-export default function Board({ imagesEnabled }: { imagesEnabled: boolean }) {
+export default function Board({ imagesEnabled, playAI }: { imagesEnabled: boolean, playAI: boolean }) {
     const [board, setBoard] = useState<Piece[]>(interpretFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
     const [selectedPiece, setSelectedPiece] = useState<{ index: number, piece: Piece } | null>(null);
     const [lastMove, setLastMove] = useState<Move | null>(null);
@@ -14,22 +14,23 @@ export default function Board({ imagesEnabled }: { imagesEnabled: boolean }) {
     const [turnColor, setTurnColor] = useState<PieceColor>(PieceColor.White);
 
     const legalMoves: Move[] = selectedPiece ? ChessRules.getLegalMoves(board, selectedPiece.piece, selectedPiece.index) : [];
+    const isCurrentColorInCheck = ChessRules.isInCheck(board, turnColor);
 
     // AI's turn.
-    if (turnColor !== playerColor) {
+    if (playAI && turnColor !== playerColor) {
         const aiMove = calculateMove(board, turnColor);
 
         if (aiMove) {
             performMove(aiMove);
         } else {
             console.log("Checkmate");
-        }        
+        }
     }
 
     const handleSquareClick = (index: number) => {
-        if (turnColor !== playerColor) return;
+        if (playAI && turnColor !== playerColor) return;
 
-        if (board[index].color === playerColor) {
+        if (board[index].color === turnColor) {
             if (index === selectedPiece?.index) {
                 setSelectedPiece(null);
             } else {
@@ -67,6 +68,7 @@ export default function Board({ imagesEnabled }: { imagesEnabled: boolean }) {
                     legalMove={legalMoves.some(move => move.to === index)}
                     onClick={() => handleSquareClick(index)}
                     useImage={imagesEnabled}
+                    isInCheck={isCurrentColorInCheck && piece.color === turnColor && piece.type === PieceType.King}
                     key={index}
                 />)}
         </div>

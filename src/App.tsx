@@ -9,17 +9,23 @@ import { FormControlLabel, Switch } from '@mui/material';
 import { useState } from 'react';
 
 function App() {
-    const [imagesEnabled, setImagesEnabled] = useState<boolean>(true);
+    const [imagesEnabled, setImagesEnabled] = useState<boolean>(false);
+    const [playAI, setPlayAI] = useState<boolean>(true);
 
     const handleImageEnabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setImagesEnabled(event.target.checked);
     }
 
+    const handlePlayAIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPlayAI(event.target.checked);
+    }
+
     return (
         <>
-            <Board imagesEnabled={imagesEnabled} />
+            <Board imagesEnabled={imagesEnabled} playAI={playAI} />
 
             <FormControlLabel control={<Switch checked={imagesEnabled} onChange={handleImageEnabledChange} />} label="Images" />
+            <FormControlLabel control={<Switch checked={playAI} onChange={handlePlayAIChange} />} label="Play AI" />
         </>
     );
 }

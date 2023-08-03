@@ -8,12 +8,13 @@ interface SquareProps {
     highlighted: boolean;
     legalMove: boolean;
     useImage: boolean;
+    isInCheck: boolean;
     onClick: () => void;
 }
 
-export default function Square({ index, piece, selected, highlighted, legalMove, useImage, onClick }: SquareProps) {
+export default function Square({ index, piece, selected, highlighted, legalMove, useImage, isInCheck, onClick }: SquareProps) {
     const squareStyle = `${styles.square} ${getSquareStyle(index, selected, highlighted)}`;
-    const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(piece, legalMove)}`;
+    const legalMoveStyle = `${styles.piece} ${getLegalMoveStyle(piece, legalMove, isInCheck)}`;
 
     const pieceRender = useImage && piece.type !== PieceType.None ? <img src={piece.getImage()} className={styles.pieceImage} /> : piece.text;
     
@@ -39,7 +40,11 @@ function getSquareStyle(index: number, selected: boolean, highlighted: boolean) 
     return darkSquare ? styles.darkSquare : "";
 }
 
-function getLegalMoveStyle(piece: Piece, legalMove: boolean) {
+function getLegalMoveStyle(piece: Piece, legalMove: boolean, isInCheck: boolean) {
+    if (isInCheck) {
+        return styles.inCheckHighlight;
+    }
+
     if (legalMove) {
         return piece.type === PieceType.None ? styles.legalMoveHighlight : styles.legalMoveHighlightPiece;
     }
