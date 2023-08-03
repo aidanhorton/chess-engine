@@ -1,6 +1,6 @@
 import { Piece, Move, PieceType, PieceColor } from "../types/chess";
 
-export function getLegalMovesForPawn(board: Piece[], position: number): Move[] {
+export function getAllMovesForPawn(board: Piece[], position: number): Move[] {
     const moves: Move[] = [];
     const row = Math.floor(position / 8);
     const col = position % 8;
@@ -8,7 +8,7 @@ export function getLegalMovesForPawn(board: Piece[], position: number): Move[] {
     const piece = board[position];
 
     // Check if the pawn is on the last row (it should be promoted, not moved, but this logic is omitted here)
-    if (row === 0) return [];
+    if ((piece.color === PieceColor.White && row === 0) || (piece.color === PieceColor.Black && row === 7)) return [];
 
     const diagonallyLeft = piece.color === PieceColor.White ? position - 9 : position + 7;
     const diagonallyRight = piece.color === PieceColor.White ? position - 7 : position + 9;
@@ -40,7 +40,7 @@ export function getLegalMovesForPawn(board: Piece[], position: number): Move[] {
     return moves;
 }
 
-export function getLegalMovesForKnight(board: Piece[], piece: Piece, position: number): Move[] {
+export function getAllMovesForKnight(board: Piece[], piece: Piece, position: number): Move[] {
     const moves: Move[] = [];
 
     // Define the offsets for a knight's moves
@@ -68,7 +68,7 @@ export function getLegalMovesForKnight(board: Piece[], piece: Piece, position: n
     return moves;
 }
 
-export function getLegalMovesForBishop(board: Piece[], piece: Piece, position: number): Move[] {
+export function getAllMovesForBishop(board: Piece[], piece: Piece, position: number): Move[] {
     const moves: Move[] = [];
 
     // Define the offsets for a bishop's moves in all four diagonal directions
@@ -103,7 +103,7 @@ export function getLegalMovesForBishop(board: Piece[], piece: Piece, position: n
     return moves;
 }
 
-export function getLegalMovesForRook(board: Piece[], piece: Piece, position: number): Move[] {
+export function getAllMovesForRook(board: Piece[], piece: Piece, position: number): Move[] {
     const moves: Move[] = [];
 
     // Define the offsets for a rook's moves in all four cardinal directions (up, down, left, right)
@@ -137,7 +137,7 @@ export function getLegalMovesForRook(board: Piece[], piece: Piece, position: num
     return moves;
 }
 
-export function getLegalMovesForQueen(board: Piece[], piece: Piece, position: number): Move[] {
+export function getAllMovesForQueen(board: Piece[], piece: Piece, position: number): Move[] {
     const moves: Move[] = [];
 
     // Define the offsets for a queen's moves in all eight directions (up, down, left, right, and diagonals)
@@ -175,7 +175,7 @@ export function getLegalMovesForQueen(board: Piece[], piece: Piece, position: nu
     return moves;
 }
 
-export function getLegalMovesForKing(board: Piece[], piece: Piece, position: number): Move[] {
+export function getAllMovesForKing(board: Piece[], piece: Piece, position: number): Move[] {
     const moves: Move[] = [];
 
     // Define the offsets for a king's moves in all eight directions

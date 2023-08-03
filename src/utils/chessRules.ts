@@ -7,13 +7,13 @@ export function isMoveLegal(boardState: Piece[], move: Move): boolean {
     return true;
 }
 
-export function getAllLegalMoves(board: Piece[], color: PieceColor): Move[] {
+export function getAllLegalMoves(board: Piece[], color: PieceColor, filter = true): Move[] {
     let legalMoves: Move[] = [];
     
     for (const piece of board) {
         if (piece.color !== color) continue;
 
-        const pieceLegalMoves = getLegalMoves(board, piece, board.indexOf(piece));
+        const pieceLegalMoves = getLegalMoves(board, piece, board.indexOf(piece), filter);
         legalMoves = legalMoves.concat(pieceLegalMoves);
     }
 
@@ -21,23 +21,54 @@ export function getAllLegalMoves(board: Piece[], color: PieceColor): Move[] {
 }
 
 // Get all legal moves for a given piece at a particular position.
-export function getLegalMoves(boardState: Piece[], piece: Piece, position: number): Move[] {
+export function getLegalMoves(board: Piece[], piece: Piece, position: number, filter = true): Move[] {
+    let legalMoves: Move[] = [];
+
     switch (piece.type) {
         case PieceType.Pawn:
-            return LegalMoves.getLegalMovesForPawn(boardState, position);
+            legalMoves = LegalMoves.getAllMovesForPawn(board, position);
+            break;
         case PieceType.Knight:
-            return LegalMoves.getLegalMovesForKnight(boardState, piece, position);
+            legalMoves = LegalMoves.getAllMovesForKnight(board, piece, position);
+            break;
         case PieceType.Bishop:
-            return LegalMoves.getLegalMovesForBishop(boardState, piece, position);
+            legalMoves = LegalMoves.getAllMovesForBishop(board, piece, position);
+            break;
         case PieceType.Rook:
-            return LegalMoves.getLegalMovesForRook(boardState, piece, position);
+            legalMoves = LegalMoves.getAllMovesForRook(board, piece, position);
+            break;
         case PieceType.Queen:
-            return LegalMoves.getLegalMovesForQueen(boardState, piece, position);
+            legalMoves = LegalMoves.getAllMovesForQueen(board, piece, position);
+            break;
         case PieceType.King:
-            return LegalMoves.getLegalMovesForKing(boardState, piece, position);
+            legalMoves = LegalMoves.getAllMovesForKing(board, piece, position);
+            break;
         default:
-            return [];
+            legalMoves = [];
+            break;
     }
+
+    if (filter) {
+        legalMoves = legalMoves.filter(move => !move.isKingCapture);
+        return filterMovesToResolveCheck(board, legalMoves, piece.color);
+    } else {
+        return legalMoves;
+    }
+}
+
+export function filterMovesToResolveCheck(board: Piece[], moves: Move[], color: PieceColor): Move[] {
+    const legalMoves: Move[] = [];
+
+    for (const move of moves) {
+        let newBoard = [...board];
+
+        newBoard[move.to] = move.piece;
+        newBoard[move.from] = new Piece(PieceType.None, PieceColor.None);
+
+        if (!isInCheck(newBoard, color)) legalMoves.push(move);
+    }
+
+    return legalMoves;
 }
 
 // Execute a move, updating the board state.
@@ -48,7 +79,7 @@ export function executeMove(board: Piece[], move: Move): Piece[] {
 
 // Check if the current position is in check.
 export function isInCheck(board: Piece[], color: PieceColor): boolean {
-    const legalMoves = getAllLegalMoves(board, color === PieceColor.White ? PieceColor.Black : PieceColor.White);
+    const legalMoves = getAllLegalMoves(board, color === PieceColor.White ? PieceColor.Black : PieceColor.White, false);
     return legalMoves.some(move => move.isKingCapture);
 }
 

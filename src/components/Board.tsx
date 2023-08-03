@@ -13,9 +13,12 @@ export default function Board({ imagesEnabled, playAI }: { imagesEnabled: boolea
     const [playerColor, setPlayerColor] = useState<PieceColor>(PieceColor.White);
     const [turnColor, setTurnColor] = useState<PieceColor>(PieceColor.White);
 
-    const legalMoves: Move[] = selectedPiece ? ChessRules.getLegalMoves(board, selectedPiece.piece, selectedPiece.index) : [];
     const isCurrentColorInCheck = ChessRules.isInCheck(board, turnColor);
 
+    let legalMoves: Move[] = selectedPiece
+            ? ChessRules.getLegalMoves(board, selectedPiece.piece, selectedPiece.index)
+            : [];
+    
     // AI's turn.
     if (playAI && turnColor !== playerColor) {
         const aiMove = calculateMove(board, turnColor);
