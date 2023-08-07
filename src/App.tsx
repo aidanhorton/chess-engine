@@ -23,7 +23,7 @@ function App() {
 
     return (
         <>
-            <Board imagesEnabled={imagesEnabled} playAI={playAI} theme={themes[1]} />
+            <Board imagesEnabled={imagesEnabled} playAI={playAI} theme={themes[0]} />
 
             <FormControlLabel control={<Switch checked={imagesEnabled} onChange={handleImageEnabledChange} />} label="Images" />
             <FormControlLabel control={<Switch checked={playAI} onChange={handlePlayAIChange} />} label="Play AI" />
