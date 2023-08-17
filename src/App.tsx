@@ -13,13 +13,8 @@ function App() {
     const [imagesEnabled, setImagesEnabled] = useState<boolean>(false);
     const [playAI, setPlayAI] = useState<boolean>(true);
 
-    const handleImageEnabledChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setImagesEnabled(event.target.checked);
-    }
-
-    const handlePlayAIChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPlayAI(event.target.checked);
-    }
+    const handleImageEnabledChange = (event: React.ChangeEvent<HTMLInputElement>) => setImagesEnabled(event.target.checked);
+    const handlePlayAIChange = (event: React.ChangeEvent<HTMLInputElement>) => setPlayAI(event.target.checked);
 
     return (
         <>
