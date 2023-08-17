@@ -9,7 +9,7 @@ import '@fontsource/roboto/700.css';
 import { FormControlLabel, Switch } from '@mui/material';
 import { useState } from 'react';
 
-function App() {
+export default function App() {
     const [imagesEnabled, setImagesEnabled] = useState<boolean>(false);
     const [playAI, setPlayAI] = useState<boolean>(true);
 
@@ -25,5 +25,3 @@ function App() {
         </>
     );
 }
-
-export default App;
