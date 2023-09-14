@@ -1,8 +1,9 @@
+import { evaluateBoard } from "./evaluation";
 import { Piece, Move, PieceType, PieceColor } from "../../types/chess";
 import { getAllLegalMoves } from "../../utils/chessRules"
 
 export function calculateMove(board: Piece[], aiColor: PieceColor): Move | null {
-    return minimax(board, 3, false).move;
+    return minimax(board, 4, false).move;
 }
 
 function minimax(board: Piece[], depth: number, maximizingPlayer: boolean, alpha: number = -Infinity, beta: number = Infinity): { score: number, move: Move | null } {
@@ -49,30 +50,6 @@ function minimax(board: Piece[], depth: number, maximizingPlayer: boolean, alpha
   
         return { score: minEval, move: bestMove };
     }
-  }
-
-function evaluateBoard(board: Piece[]): number {
-    let score = 0;
-
-    // Define piece values
-    const pieceValues = {
-        [PieceType.Pawn]: 1,
-        [PieceType.Knight]: 3,
-        [PieceType.Bishop]: 3,
-        [PieceType.Rook]: 5,
-        [PieceType.Queen]: 9,
-        [PieceType.King]: 0, // King's value is usually not considered in evaluation as its safety is paramount
-    };
-
-    // Iterate through the board, adding or subtracting the value of each piece
-    for (const piece of board) {
-        if (piece.type === PieceType.None) continue;
-
-        const value = pieceValues[piece.type];
-        score += piece.color === PieceColor.White ? value : -value;
-    }
-
-    return score;
 }
 
 function gameIsOver(board: Piece[]): boolean {
