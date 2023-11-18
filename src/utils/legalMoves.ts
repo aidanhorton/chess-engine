@@ -1,5 +1,7 @@
 import { Piece, Move, PieceType, PieceColor } from "../types/chess";
 
+// TODO - Pawn on the last column cant take diagonally. It had its own colour piece directly in front.
+
 export function getAllMovesForPawn(board: Piece[], position: number): Move[] {
     const moves: Move[] = [];
     const row = Math.floor(position / 8);
